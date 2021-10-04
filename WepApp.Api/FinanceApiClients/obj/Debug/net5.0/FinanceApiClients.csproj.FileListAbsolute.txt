@@ -1,0 +1,12 @@
+D:\testovoe\WepApp.Api\FinanceApiClients\bin\Debug\net5.0\FinanceApiClients.deps.json
+D:\testovoe\WepApp.Api\FinanceApiClients\bin\Debug\net5.0\FinanceApiClients.dll
+D:\testovoe\WepApp.Api\FinanceApiClients\bin\Debug\net5.0\ref\FinanceApiClients.dll
+D:\testovoe\WepApp.Api\FinanceApiClients\bin\Debug\net5.0\FinanceApiClients.pdb
+D:\testovoe\WepApp.Api\FinanceApiClients\obj\Debug\net5.0\FinanceApiClients.csprojAssemblyReference.cache
+D:\testovoe\WepApp.Api\FinanceApiClients\obj\Debug\net5.0\FinanceApiClients.GeneratedMSBuildEditorConfig.editorconfig
+D:\testovoe\WepApp.Api\FinanceApiClients\obj\Debug\net5.0\FinanceApiClients.AssemblyInfoInputs.cache
+D:\testovoe\WepApp.Api\FinanceApiClients\obj\Debug\net5.0\FinanceApiClients.AssemblyInfo.cs
+D:\testovoe\WepApp.Api\FinanceApiClients\obj\Debug\net5.0\FinanceApiClients.csproj.CoreCompileInputs.cache
+D:\testovoe\WepApp.Api\FinanceApiClients\obj\Debug\net5.0\FinanceApiClients.dll
+D:\testovoe\WepApp.Api\FinanceApiClients\obj\Debug\net5.0\ref\FinanceApiClients.dll
+D:\testovoe\WepApp.Api\FinanceApiClients\obj\Debug\net5.0\FinanceApiClients.pdb

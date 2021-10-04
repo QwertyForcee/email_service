@@ -1,0 +1,62 @@
+CREATE TABLE "Role" (
+	"Id"	INTEGER NOT NULL,
+	"Name"	TEXT NOT NULL,
+	PRIMARY KEY("Id" AUTOINCREMENT)
+)
+CREATE TABLE "User" (
+	"Id"	INTEGER NOT NULL,
+	"Email"	TEXT NOT NULL,
+	"Password"	TEXT NOT NULL,
+	PRIMARY KEY("Id" AUTOINCREMENT)
+)
+CREATE TABLE "UserRole" (
+	"UserId"	INTEGER NOT NULL,
+	"RoleId"	INTEGER NOT NULL,
+	FOREIGN KEY("UserId") REFERENCES "User"("Id"),
+	FOREIGN KEY("RoleId") REFERENCES "Role"("Id")
+)
+
+CREATE TABLE "CoinTask" (
+	"Id"	INTEGER NOT NULL,
+	"Name"	TEXT NOT NULL,
+	"Description"	TEXT,
+	"UserId"	INTEGER NOT NULL,
+	"CoinId"	INTEGER NOT NULL,
+	"CronExpression"	TEXT NOT NULL,
+	"LastTime"	TEXT,
+	PRIMARY KEY("Id" AUTOINCREMENT),
+	FOREIGN KEY("UserId") REFERENCES "User"("Id") ON UPDATE CASCADE
+)
+CREATE TABLE "CurrencyTask" (
+	"Id"	INTEGER NOT NULL,
+	"Name"	TEXT NOT NULL,
+	"Description"	TEXT,
+	"UserId"	INTEGER NOT NULL,
+	"CronExpression"	TEXT NOT NULL,
+	"From"	TEXT NOT NULL,
+	"To"	TEXT NOT NULL,
+	"Count"	INTEGER,
+	"LastTime"	TEXT,
+	FOREIGN KEY("UserId") REFERENCES "User"("Id"),
+	PRIMARY KEY("Id" AUTOINCREMENT)
+)
+CREATE TABLE "QuoteTask" (
+	"Id"	INTEGER NOT NULL,
+	"Name"	TEXT NOT NULL,
+	"Description"	TEXT,
+	"UserId"	INTEGER NOT NULL,
+	"Lang"	TEXT NOT NULL,
+	"CronExpression"	TEXT NOT NULL,
+	"LastTime"	TEXT,
+	PRIMARY KEY("Id" AUTOINCREMENT),
+	FOREIGN KEY("UserId") REFERENCES "User"("Id")
+)
+
+
+INSERT INTO Role(Name) VALUES ("User");
+
+INSERT INTO Role(Name) VALUES ("Admin");
+
+INSERT INTO User(Email,Password) VALUES ("admin@admin.com","admin")
+
+INSERT INTO UserRole(UserId,RoleId) VALUES (1,2)
