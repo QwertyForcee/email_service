@@ -1,0 +1,36 @@
+.home *{
+  margin: 0;
+}
+$home-bg : rgb(108, 175, 180);
+.first-h1{
+  padding: 3rem 0 0 10%;
+  background: $home-bg;
+  color: rgb(16, 73, 73);
+  font-size: 80px;
+  font-weight: bold;
+
+}
+
+.join{
+  position: absolute;
+  right: 10%;
+  font-size: 100px;
+  font-weight: bold;
+  background: $home-bg;
+  //background: rgb(166, 232, 233);
+}
+.join a{
+  text-decoration: none;
+  color: rgb(3, 46, 46);
+}
+.second-headers{
+  text-align: center;
+  font-size: 50px;
+}
+.second-headers h1{
+  color: rgb(15, 26, 26);
+  font-size: 80px;
+}
+.second-headers h2{
+  font-size: 40px;
+}

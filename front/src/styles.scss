@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+:root{
+  --base-bg: rgb(91, 184, 140);
+}
+
+html,body{
+  height: 100%;
+}
+
+body{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans', sans-serif;;
+}
+
+app-root{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main{
+  flex:1;
+  height: max-content;
+}
+
+footer{
+  flex-shrink: 0;
+}
+
+
+

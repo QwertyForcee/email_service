@@ -1,0 +1,27 @@
+
+<div class="register-login-container" *ngIf="isLogInMode">
+  <form [formGroup]="loginForm" action="">
+      <label>Email</label>
+      <input class="form-control" name="name" formControlName="email" />
+
+      <label>Password</label>
+      <input class="form-control" name="name" formControlName="password" />
+
+      <button class="btn btn-info" (click)="submitLogin()">LOG IN</button>
+
+  </form>
+  <button class="btn btn-light" (click)="changeMode()">Swap to register</button>
+
+</div>
+<div class="register-login-container" *ngIf="!isLogInMode">
+  <form [formGroup]="loginForm" action="">
+      <label>Email</label>
+      <input class="form-control" name="name" formControlName="email" />
+
+      <label>Password</label>
+      <input class="form-control" name="name" formControlName="password" />
+
+      <button class="btn btn-info" (click)="submitRegister()">REGISTER</button>
+  </form>
+  <button class="btn btn-light" (click)="changeMode()">Swap to login</button>
+</div>

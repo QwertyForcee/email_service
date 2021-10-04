@@ -1,0 +1,9 @@
+<div class="header">
+  <nav class="main-nav">
+    <a routerLink="">Home</a>
+    <a routerLink="tasks">Tasks</a>
+    <a routerLink="new" href="">New</a>
+    <a *ngIf="!isLoggedIn" routerLink="auth">Log In</a>
+    <a *ngIf="isLoggedIn" href="" (click)="logOut()">Log Out</a>
+  </nav>
+</div>
