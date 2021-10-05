@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Frequencies } from 'src/app/frequencies';
 import { CurrencyTaskService } from 'src/app/services/currency-task.service';
 
 @Component({
@@ -23,10 +24,12 @@ export class ShowCurrencyTasksComponent implements OnInit {
   currencies:any=[]
   isEditMode=false
   EditForm:FormGroup
+  frequencies:any=[]
+
   ngOnInit(): void {
     this.currencyService.getCurrencyList().subscribe(list=>this.currencies=list)
     this.currencyService.getUserCurrencyTasks().subscribe(r=>this.tasks=r)
-
+    this.frequencies = Frequencies
   }
 
 
@@ -39,6 +42,9 @@ export class ShowCurrencyTasksComponent implements OnInit {
     this.currencyService.deleteTask(id).subscribe()
   }
   submit(){
+    let frequency = this.frequencies[this.EditForm.get('Frequency')?.value][1]
+    this.EditForm.patchValue({'Frequency':frequency})
+
     this.currencyService.putTask(this.EditForm.value).subscribe()
   }
 }

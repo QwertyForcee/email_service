@@ -14,9 +14,7 @@
   <div class="form-group form-group-m">
     <label>Frequency</label>
     <select formControlName="Frequency">
-      <option value="1">1 per day</option>
-      <option value="2">1 time in 2 days</option>
-      <option value="7">once a week</option>
+      <option value="{{i}}" *ngFor="let frequency of frequencies;let i = index">{{frequency[0]}}</option>
     </select>
   </div>
   <div class="form-group form-group-m">

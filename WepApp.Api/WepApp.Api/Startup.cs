@@ -18,6 +18,7 @@ using WepApp.Api.DataAccess;
 using WepApp.Api.DataAccess.Repositories;
 using WepApp.Api.DataAccess.Repositories.DapperImplementations;
 using WepApp.Api.DataAccess.Repositories.Implementations;
+using WepApp.Api.EmailManager;
 using WepApp.Api.Entities;
 using WepApp.Api.Services;
 
@@ -42,12 +43,15 @@ namespace WepApp.Api
             services.Configure<AuthOptions>(authOptionsConfiguration);
 
             services.AddSingleton(new DbConfig { ConnectionString = Configuration["Default"] });
+            services.Configure<EmailManagerConfig>(Configuration.GetSection("EmailManager"));
 
             services.AddScoped<IUserRepository<User>, UserRepository>();
             services.AddScoped<IQuoteTaskRepository<QuoteTask>, QuoteTaskRepository>();
             services.AddScoped<ICurrencyTaskRepository<CurrencyTask>, CurrencyTaskRepository>();
             services.AddScoped<ICoinTaskRepository<CoinTask>,CoinTaskRepository>();
 
+            services.AddScoped<IEmailSender,EmailSender>();
+            services.AddScoped<ICsvManager,CsvManager>();
 
             services.AddScoped<ICurrencyExchangeCaller, CurrencyExchangeCaller>();
             services.AddScoped<ICoinrankingCaller,CoinrankingCaller>();

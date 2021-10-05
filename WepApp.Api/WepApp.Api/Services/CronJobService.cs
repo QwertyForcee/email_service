@@ -16,12 +16,9 @@ using WepApp.Api.Models;
 
 namespace WepApp.Api.Services
 {
-    public class CronJobService<T> : BackgroundService where T:ICronJob
+    public abstract class CronJobService<T> : BackgroundService where T:ICronJob
     {
         protected IServiceProvider _serviceProvider;
-        
-        protected CsvManager csvManager=new CsvManager();
-        protected EmailSender emailSender = new EmailSender();
 
         protected Mutex mutex = new Mutex();
         protected int currentCountOfThreads = 0;
@@ -37,6 +34,8 @@ namespace WepApp.Api.Services
             this._serviceProvider = provider;
         }
 
+        protected abstract Task<object> DoExactWork(ICronJob job);
+        protected abstract Task LoadCronJobs();
         protected async Task ManageJob(int id, CancellationToken cancellationToken)
         {
             var job = currentJobs.Where(j => j.Id == id).FirstOrDefault();
@@ -73,8 +72,13 @@ namespace WepApp.Api.Services
 
                 if (data != null)
                 {
-                    var filename = this.csvManager.WriteCsv(data);
-                    this.emailSender.Send(job, filename);
+                    using (IServiceScope scope = _serviceProvider.CreateScope()) {
+                        var csvManager = scope.ServiceProvider.GetRequiredService<ICsvManager>();
+                        var emailSender = scope.ServiceProvider.GetRequiredService<IEmailSender>();
+
+                        var filename = csvManager.WriteCsv(data);
+                        emailSender.Send(job, filename);
+                    }
                 }
                 else
                 {
@@ -82,10 +86,6 @@ namespace WepApp.Api.Services
                 }
             }
         }
-        protected async virtual Task<object> DoExactWork(ICronJob job) {
-            return null;
-        }
-        
 
         protected async override Task ExecuteAsync(CancellationToken cancellationToken)
         {
@@ -111,11 +111,6 @@ namespace WepApp.Api.Services
                     }
                 }
             }
-        }
-
-        protected virtual async Task LoadCronJobs()
-        {
-            
         }
         public void AddCronJob(T job)
         {

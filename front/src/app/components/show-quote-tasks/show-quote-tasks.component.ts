@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Frequencies } from 'src/app/frequencies';
 import { QuoteTaskService } from 'src/app/services/quote-task.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class ShowQuoteTasksComponent implements OnInit {
       "CoinId":new FormControl(null,Validators.required),
     })
    }
+   frequencies:any=[]
    languages=[
     {code: 'en' , full:'English'},
     {code: 'es',full:'Spanish'},
@@ -33,6 +35,7 @@ export class ShowQuoteTasksComponent implements OnInit {
   ]
   ngOnInit(): void {
     this.quoteService.getUserQuoteTasks().subscribe(r=>this.tasks=r)
+    this.frequencies = Frequencies
   }
 
   editTask(id:number){
@@ -44,6 +47,9 @@ export class ShowQuoteTasksComponent implements OnInit {
     this.quoteService.deleteTask(id).subscribe()
   }
   submit(){
+    let frequency = this.frequencies[this.EditForm.get('Frequency')?.value][1]
+    this.EditForm.patchValue({'Frequency':frequency})
+
     this.quoteService.putTask(this.EditForm.value).subscribe()
   }
 }

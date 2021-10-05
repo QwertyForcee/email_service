@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { quoteTask } from '../models/quoteTask';
+import { ToCronExpr } from '../frequencies';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +20,20 @@ export class QuoteTaskService {
       name:taskForm.Name,
       description: taskForm.Description,
       coinId:taskForm.CoinId,
-      cronExpression:this.ToCronExpr(taskForm.Frequency,taskForm.ExecutionMoment) ,
+      cronExpression:ToCronExpr(taskForm.Frequency,taskForm.ExecutionMoment) ,
       lang:taskForm.Lang
     }
     console.log(task)
     return this.http.post(this.url+'tasks',task);
   }
-  putTask(task:quoteTask):Observable<any>{
+  putTask(taskForm:any):Observable<any>{
+    let task = {
+      name:taskForm.Name,
+      description: taskForm.Description,
+      coinId:taskForm.CoinId,
+      cronExpression:ToCronExpr(taskForm.Frequency,taskForm.ExecutionMoment) ,
+      lang:taskForm.Lang
+    }
     return this.http.put(this.url+'tasks',task);
   }
 
@@ -38,15 +46,4 @@ export class QuoteTaskService {
   getUserQuoteTasks():Observable<any>{
     return this.http.get(this.url+'tasks/user')
   };
-  private ToCronExpr(Frequency:string,ExecutionMoment:string){
-    let minutes:number =  +ExecutionMoment.substring(3)
-    let hours:number = +ExecutionMoment.substring(0,2)
-
-    let exp = ['*','*','*','*','*']
-    exp[0] = minutes.toString()
-    exp[1] = hours.toString()
-    if (Frequency!=='1')
-      exp[2] = exp[2]+'/'+Frequency
-    return exp.join(' ')
-  }
 }

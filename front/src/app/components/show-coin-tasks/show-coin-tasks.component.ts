@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { Frequencies } from 'src/app/frequencies';
 import { Coin } from 'src/app/models/Coin';
 import { CoinTaskService } from 'src/app/services/coin-task.service';
 
@@ -22,7 +23,7 @@ export class ShowCoinTasksComponent implements OnInit {
    }
   tasks:any[]=[]
   coins:Coin[]=[]
-
+  frequencies:any=[]
   isEditMode=false
 
   EditForm:FormGroup;
@@ -36,6 +37,7 @@ export class ShowCoinTasksComponent implements OnInit {
       this.tasks=result
       console.log(result)
     })
+    this.frequencies = Frequencies
   }
 
   editTask(id:number){
@@ -47,6 +49,9 @@ export class ShowCoinTasksComponent implements OnInit {
     this.coinService.deleteTask(id).subscribe()
   }
   submit(){
+    let frequency = this.frequencies[this.EditForm.get('Frequency')?.value][1]
+    this.EditForm.patchValue({'Frequency':frequency})
+
     this.coinService.putTask(this.EditForm.value).subscribe()
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Frequencies } from 'src/app/frequencies';
 import { CurrencyTaskService } from 'src/app/services/currency-task.service';
 
 @Component({
@@ -11,6 +12,7 @@ export class CurrencyTaskFormComponent implements OnInit {
 
   currencyTaskForm:FormGroup
   currencies=[]
+  frequencies:any=[]
   constructor(private currencyTaskService:CurrencyTaskService) {
     this.currencyTaskForm = new FormGroup({
       "Name":new FormControl("",Validators.required),
@@ -24,8 +26,12 @@ export class CurrencyTaskFormComponent implements OnInit {
   }
   ngOnInit(): void {
     this.currencyTaskService.getCurrencyList().subscribe(list=>this.currencies=list)
+    this.frequencies=Frequencies
   }
   submit(){
+    let frequency = this.frequencies[this.currencyTaskForm.get('Frequency')?.value][1]
+    this.currencyTaskForm.patchValue({'Frequency':frequency})
+
     this.currencyTaskService.postTask(this.currencyTaskForm.value).subscribe()
   }
 

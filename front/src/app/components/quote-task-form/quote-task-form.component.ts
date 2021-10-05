@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Frequencies } from 'src/app/frequencies';
 import { QuoteTaskService } from 'src/app/services/quote-task.service';
 
 @Component({
@@ -28,10 +29,14 @@ export class QuoteTaskFormComponent implements OnInit {
     {code: 'fr',full:'French'},
     {code: 'ru',full:'Russian'},
   ]
+  frequencies:any=[]
   ngOnInit(): void {
-
+    this.frequencies=Frequencies
   }
   submit(){
+    let frequency = this.frequencies[this.quoteTaskForm.get('Frequency')?.value][1]
+    this.quoteTaskForm.patchValue({'Frequency':frequency})
+
     this.quoteTaskService.postTask(this.quoteTaskForm.value).subscribe(r=>console.log(r))
   }
 

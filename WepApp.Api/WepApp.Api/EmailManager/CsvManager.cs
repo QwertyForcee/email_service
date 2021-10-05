@@ -11,7 +11,7 @@ using WepApp.Api.Entities;
 
 namespace WepApp.Api.EmailManager
 {
-    public class CsvManager
+    public class CsvManager:ICsvManager
     {
         private string directory = @"D:\testovoe\storage\";
         public string WriteCsv(object obj)

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Coin } from 'src/app/models/Coin';
 import { coinTask } from 'src/app/models/coinTask';
 import { CoinTaskService } from 'src/app/services/coin-task.service';
+import { Frequencies } from 'src/app/frequencies';
 
 @Component({
   selector: 'app-coin-task-form',
@@ -22,7 +23,7 @@ export class CoinTaskFormComponent implements OnInit {
   }
   coinTaskForm:FormGroup;
   coins:Coin[] = [];
-
+  frequencies:any=[]
   ngOnInit(): void {
 
     this.coinTaskService.getCoins().subscribe(
@@ -31,9 +32,12 @@ export class CoinTaskFormComponent implements OnInit {
         console.log(coins);
       }
     )
+    this.frequencies = Frequencies
   }
   submit(){
-    console.log(this.coinTaskForm.value)
+    let frequency = this.frequencies[this.coinTaskForm.get('Frequency')?.value][1]
+    this.coinTaskForm.patchValue({'Frequency':frequency})
+
     this.coinTaskService.postTask(this.coinTaskForm.value).subscribe()
   }
 

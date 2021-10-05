@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,13 +10,17 @@ using WepApp.Api.Entities;
 
 namespace WepApp.Api.EmailManager
 {
-    public class EmailSender
+    public class EmailSender:IEmailSender
     {
-        private readonly string appEmail = "maxim.webmy@gmail.com";
-        private readonly string password = "cegthgfhjkm100!";
+        private EmailManagerConfig _config;
+        public EmailSender(IOptions<EmailManagerConfig> config)
+        {
+            this._config = config.Value;
+        }
+
         public void Send(ICronJob job, string filename)
         {
-            MailAddress from = new MailAddress(this.appEmail, "Maxim");
+            MailAddress from = new MailAddress(_config.AppEmail, "Maxim");
             MailAddress to = new MailAddress(job.Email);
             MailMessage message = new MailMessage(from, to);
 
@@ -23,8 +28,10 @@ namespace WepApp.Api.EmailManager
             message.Body = job.Description;
             message.IsBodyHtml = true;
             message.Attachments.Add(new Attachment(filename));
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential(appEmail, this.password);
+
+            SmtpClient smtp = new SmtpClient(_config.Host, _config.Port);
+
+            smtp.Credentials = new NetworkCredential(_config.AppEmail, _config.Password);
             smtp.EnableSsl = true;
             smtp.Send(message);
         }
