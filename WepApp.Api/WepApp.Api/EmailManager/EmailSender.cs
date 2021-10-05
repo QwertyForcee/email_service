@@ -10,12 +10,16 @@ using WepApp.Api.Entities;
 
 namespace WepApp.Api.EmailManager
 {
-    public class EmailSender:IEmailSender
+    public class EmailSender:IEmailSender,IDisposable
     {
         private EmailManagerConfig _config;
+        private SmtpClient _smtp;
         public EmailSender(IOptions<EmailManagerConfig> config)
         {
             this._config = config.Value;
+            _smtp = new SmtpClient(_config.Host, _config.Port);
+            _smtp.Credentials = new NetworkCredential(_config.AppEmail, _config.Password);
+            _smtp.EnableSsl = true;
         }
 
         public void Send(ICronJob job, string filename)
@@ -29,11 +33,11 @@ namespace WepApp.Api.EmailManager
             message.IsBodyHtml = true;
             message.Attachments.Add(new Attachment(filename));
 
-            SmtpClient smtp = new SmtpClient(_config.Host, _config.Port);
-
-            smtp.Credentials = new NetworkCredential(_config.AppEmail, _config.Password);
-            smtp.EnableSsl = true;
-            smtp.Send(message);
+            _smtp.Send(message);
+        }
+        public void Dispose()
+        {
+            this._smtp?.Dispose();
         }
     }
 }
