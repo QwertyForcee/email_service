@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using ApiClients.Configs;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,11 @@ namespace ApiClients
 {
     public class CurrencyExchangeCaller:ICurrencyExchangeCaller
     {
+        CallerConfig<CurrencyExchangeCaller> _config;
+        public CurrencyExchangeCaller(IOptions<CallerConfig<CurrencyExchangeCaller>> config)
+        {
+            this._config = config.Value;
+        }
         public HttpClient client = new HttpClient();
 
         public async Task<List<string>> GetCurrenciesListAsync()
@@ -17,11 +24,11 @@ namespace ApiClients
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://currency-exchange.p.rapidapi.com/listquotes"),
+                RequestUri = new Uri("https://"+_config.Host+"/listquotes"),
                 Headers =
                 {
-                    { "x-rapidapi-host", "currency-exchange.p.rapidapi.com" },
-                    { "x-rapidapi-key", "3893ac1711msh7a6f3bdb3992da8p1b65b6jsn3d3f9335409f" },
+                    { "x-rapidapi-host", _config.Host },
+                    { "x-rapidapi-key", _config.Key },
                 },
             };
             using (var response = await this.client.SendAsync(request))
@@ -33,15 +40,15 @@ namespace ApiClients
         }
         public async Task<object> GetExchangeCurrencyAsync(string from, string to,int count=1)
         {
-            string uri = $"https://currency-exchange.p.rapidapi.com/exchange?from="+from+"&to="+to+"&q="+count;
+            string uri = $" https://" + _config.Host + "/exchange?from=" +from+"&to="+to+"&q="+count;
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(uri),
                 Headers =
                 {
-                    { "x-rapidapi-host", "currency-exchange.p.rapidapi.com" },
-                    { "x-rapidapi-key", "3893ac1711msh7a6f3bdb3992da8p1b65b6jsn3d3f9335409f" },
+                    { "x-rapidapi-host", _config.Host },
+                    { "x-rapidapi-key", _config.Key },
                 },
             };
             using (var response = await client.SendAsync(request))

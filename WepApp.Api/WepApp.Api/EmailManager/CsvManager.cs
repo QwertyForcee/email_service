@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,7 +14,11 @@ namespace WepApp.Api.EmailManager
 {
     public class CsvManager:ICsvManager
     {
-        private string directory = @"D:\testovoe\storage\";
+        public CsvManager(IConfiguration config)
+        {
+            this.directory = config.GetSection("Storage").Value;
+        }
+        private string directory;
         public string WriteCsv(object obj)
         {
             string name = this.directory + Guid.NewGuid() + ".csv";

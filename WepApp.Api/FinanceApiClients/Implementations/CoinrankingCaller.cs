@@ -1,4 +1,6 @@
-﻿using ApiClients.Models;
+﻿using ApiClients.Configs;
+using ApiClients.Models;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -12,17 +14,22 @@ namespace ApiClients
 {
     public class CoinrankingCaller:ICoinrankingCaller
     {
+        CallerConfig<CoinrankingCaller> _config;
+        public CoinrankingCaller(IOptions<CallerConfig<CoinrankingCaller>> config)
+        {
+            this._config = config.Value;
+        }
         public async Task<Coin> GetCoin(int id)
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://coinranking1.p.rapidapi.com/coin/"+id),
+                RequestUri = new Uri("https://"+_config.Host+ "/coin/"+id),
                 Headers =
                 {
-                    { "x-rapidapi-host", "coinranking1.p.rapidapi.com" },
-                    { "x-rapidapi-key", "3893ac1711msh7a6f3bdb3992da8p1b65b6jsn3d3f9335409f" },
+                    { "x-rapidapi-host", _config.Host },
+                    { "x-rapidapi-key", _config.Key },
                 },
             };
             using (var response = await client.SendAsync(request))
@@ -41,11 +48,11 @@ namespace ApiClients
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://coinranking1.p.rapidapi.com/coins"),
+                RequestUri = new Uri("https://"+_config.Host+"/coins"),
                 Headers =
                 {
-                    { "x-rapidapi-host", "coinranking1.p.rapidapi.com" },
-                    { "x-rapidapi-key", "3893ac1711msh7a6f3bdb3992da8p1b65b6jsn3d3f9335409f" },
+                    { "x-rapidapi-host", _config.Host },
+                    { "x-rapidapi-key", _config.Key },
                 },
             };
             using (var response = await client.SendAsync(request))

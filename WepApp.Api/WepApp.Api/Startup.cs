@@ -1,4 +1,5 @@
 using ApiClients;
+using ApiClients.Configs;
 using ApiClients.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -45,6 +46,10 @@ namespace WepApp.Api
             services.AddSingleton(new DbConfig { ConnectionString = Configuration["Default"] });
             services.Configure<EmailManagerConfig>(Configuration.GetSection("EmailManager"));
 
+            services.Configure<CallerConfig<CoinrankingCaller>>(Configuration.GetSection("CoinrankingApi"));
+            services.Configure<CallerConfig<CurrencyExchangeCaller>>(Configuration.GetSection("CurrencyExchangeApi"));
+            services.Configure<CallerConfig<RandomQuotesCaller>>(Configuration.GetSection("QuotesApi"));
+
             services.AddScoped<IUserRepository<User>, UserRepository>();
             services.AddScoped<IQuoteTaskRepository<QuoteTask>, QuoteTaskRepository>();
             services.AddScoped<ICurrencyTaskRepository<CurrencyTask>, CurrencyTaskRepository>();
@@ -56,7 +61,6 @@ namespace WepApp.Api
             services.AddScoped<ICurrencyExchangeCaller, CurrencyExchangeCaller>();
             services.AddScoped<ICoinrankingCaller,CoinrankingCaller>();
             services.AddScoped<IRandomQuotesCaller,RandomQuotesCaller>();
-
 
             services.AddHostedService<CoinCronJobService>();
             services.AddHostedService<CurrencyCronJobService>();
